@@ -95,18 +95,24 @@ function clearDisplay() {
 }
 
 function inputDigit(digit) {
+    // 确保 displayValue 是字符串类型
+    if (typeof displayValue !== 'string') {
+        displayValue = displayValue.toString();
+    }
+    
     // 如果刚完成计算或等待第二个操作数，清空显示并输入新数字
     if (waitingForSecondOperand === true) {
-        displayValue = digit;
+        displayValue = digit.toString();
         waitingForSecondOperand = false;
         displayExpression = ''; // 清空表达式
     } else {
         // 如果显示的是错误信息，直接替换
         if (displayValue === '错误') {
-            displayValue = digit;
+            displayValue = digit.toString();
             displayExpression = '';
         } else {
-            displayValue = displayValue === '0' ? digit : displayValue + digit;
+            // 确保是字符串拼接，不是数字相加
+            displayValue = displayValue === '0' ? digit.toString() : displayValue.toString() + digit.toString();
         }
     }
     updateDisplay();
@@ -148,7 +154,7 @@ function inputOperator(nextOperator) {
     
     const inputValue = parseFloat(displayValue);
     
-    // 如果已经有操作符且正在等待第二个操作数，只更新操作符
+    // 如果已经有操作符且正在等待第二个操作数，只更新操作符（不进行计算）
     if (operator && waitingForSecondOperand) {
         operator = nextOperator;
         // 更新表达式显示
@@ -157,8 +163,10 @@ function inputOperator(nextOperator) {
         return;
     }
     
-    // 如果已经有第一个操作数和操作符，先计算
-    if (firstOperand !== null && operator) {
+    // 如果已经有第一个操作数和操作符，且已经输入了第二个操作数，先计算
+    // 但只有在用户已经输入了第二个操作数（waitingForSecondOperand = false）时才计算
+    // 注意：这里只在连续输入运算符时进行计算，比如 2+3- 会先计算 2+3=5，然后等待输入
+    if (firstOperand !== null && operator && !waitingForSecondOperand) {
         const result = performCalculation(operator, firstOperand, inputValue);
         if (result === null) {
             return; // 计算错误，不继续
@@ -166,6 +174,7 @@ function inputOperator(nextOperator) {
         displayValue = formatResult(result);
         firstOperand = result;
     } else {
+        // 如果没有第一个操作数，或者没有操作符，设置第一个操作数
         firstOperand = inputValue;
     }
     
