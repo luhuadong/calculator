@@ -1,0 +1,149 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1a1a1a; /* 暗黑背景 */
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.calculator {
+    width: 320px;
+    height: 580px;
+    background-color: #000;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.display-container {
+    width: 100%;
+    height: 170px; /* 固定高度：2条历史记录(60px) + display区域(60px) + padding(40px) + 间距(10px) */
+    background-color: #333;
+    border-radius: 15px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* 内容靠底部对齐 */
+}
+
+.history {
+    width: 100%;
+    height: 60px; /* 固定高度：2条历史记录 */
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.history-item {
+    width: 100%;
+    height: 30px;
+    color: #888;
+    font-size: 1em;
+    text-align: right;
+    padding: 5px 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.history-item:not(:empty) {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.history-item:empty {
+    display: none;
+}
+
+.display {
+    width: 100%;
+    height: 60px; /* 固定高度 */
+    color: white;
+    font-size: 2.5em;
+    text-align: right;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    line-height: 1;
+}
+
+.button {
+    width: 60px;
+    height: 60px;
+    margin: 10px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5em;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.button:active {
+    background-color: #555;
+}
+
+.button.orange {
+    background-color: #f79e1b;
+}
+
+.button.gray {
+    background-color: #a5a5a5;
+}
+
+.button.dark-gray {
+    background-color: #333;
+}
+
+/* 数字 0 按钮特殊样式：上下边为水平线，左右为圆弧 */
+.button.zero {
+    width: 140px; /* 两个按钮的宽度加上间距 */
+    border-radius: 30px; /* 左右圆弧 */
+    text-align: center; /* 文本居中 */
+    padding-left: 0; /* 移除左侧内边距 */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+
+footer {
+    margin-top: 30px;
+    padding: 20px 0;
+    text-align: center;
+}
+
+footer a {
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+footer a:hover {
+    opacity: 0.8;
+}
+
+footer img {
+    filter: grayscale(100%) brightness(3) invert(1); /* 浅色徽标：灰度+高亮度+反色 */
+    transition: filter 0.2s;
+}
+
+footer a:hover img {
+    filter: grayscale(80%) brightness(1.2) invert(1); /* 悬停时恢复彩色 */
+}
+
